@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from tasks import models
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, View
 from tasks.forms import TaskForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from tasks.mixins import UserIsOwnerMixin
+from django.http import HttpResponseRedirect
 
 
 class TaskListView(ListView):
@@ -27,3 +29,11 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super().form_valid(form)
+    
+
+class TaskCompleteView(LoginRequiredMixin, UserIsOwnerMixin, View):
+    def post(self, request, *args, **kwargs):
+        task = self.get_object()
+        task.status = "done"
+        task.save()
+        return HttpResponseRedirect(reverse_lazy("tasks:task-list"))
