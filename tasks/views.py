@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from tasks import models
 from django.views.generic import ListView, DetailView, CreateView, View
@@ -37,3 +37,7 @@ class TaskCompleteView(LoginRequiredMixin, UserIsOwnerMixin, View):
         task.status = "done"
         task.save()
         return HttpResponseRedirect(reverse_lazy("tasks:task-list"))
+
+    def get_object(self):
+        task_id = self.kwargs.get("pk")
+        return get_object_or_404(models.Task, pk=task_id)
