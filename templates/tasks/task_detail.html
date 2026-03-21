@@ -6,7 +6,7 @@
     <p> {{ task.description }} </p>
     <p>Статус: <span class="badge badge-primary">{{ task.status }}</span> </p>
     <p>Пріорітет: <span class="badge badge-primary">{{ task.priority }}</span> </p>
-    <a href="#" class="btn btn-warning">Редагувати</a>
-    <a href="#" class="btn btn-danger">Видалити</a>
+    <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-warning">Редагувати</a>
+    <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Видалити</a>
 </div>
 {% endblock %}
