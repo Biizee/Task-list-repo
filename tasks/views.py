@@ -42,11 +42,13 @@ class TaskCompleteView(LoginRequiredMixin, UserIsOwnerMixin, View):
         task_id = self.kwargs.get("pk")
         return get_object_or_404(models.Task, pk=task_id)
 
+
 class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = models.Task
     form_class = TaskForm
     template_name = "tasks/task_update_form.html"
     success_url = reverse_lazy("tasks:task-list")
+
 
 class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = models.Task
