@@ -10,7 +10,7 @@ class TaskForm(forms.ModelForm):
 class TaskFilterForm(forms.Form):
 
     STATUS_CHOICES = {
-        ("", "All")
+        ("", "All"),
         ("todo", "To Do"),
         ("in_progress", "In Progress"),
         ("done", "Done")
