@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from tasks import models
 from django.views.generic import ListView, DetailView, CreateView, View, UpdateView, DeleteView
-from tasks.forms import TaskForm
+from tasks.forms import TaskForm, TaskFilterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from tasks.mixins import UserIsOwnerMixin
 from django.http import HttpResponseRedirect
@@ -12,6 +12,20 @@ class TaskListView(ListView):
     model = models.Task
     context_object_name = "tasks"
     template_name = "tasks/task_list.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        status = self.request.GET.get("status", "")
+        if status:
+            queryset = queryset.filter(status=status)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = TaskFilterForm(self.request.GET)
+        
+        return context
 
 
 class TaskDetailView(DetailView):
