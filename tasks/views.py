@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from tasks import models
-from django.views.generic import ListView, DetailView, CreateView, View, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, View, UpdateView, DeleteView
 from tasks.forms import TaskForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from tasks.mixins import UserIsOwnerMixin
@@ -50,7 +50,7 @@ class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     success_url = reverse_lazy("tasks:task-list")
 
 
-class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
     model = models.Task
-    template_name = "tasks/task_update_form.html"
+    template_name = "tasks/task_delete_confirmation.html"
     success_url = reverse_lazy("tasks:task-list")
